@@ -4,20 +4,25 @@
  * Displays random active keyword from database
  */
 
-// Include admin config for database connection
-require_once 'admin/config.php';
-
-// Get a random active keyword from database
-$keyword = 'aqua regia fest'; // Default fallback
-try {
-    $pdo = getDBConnection();
-    $stmt = $pdo->query("SELECT keyword FROM keywords WHERE status = 'active' ORDER BY RAND() LIMIT 1");
-    $result = $stmt->fetch();
-    if ($result) {
-        $keyword = $result['keyword'];
+// Include admin config for database connection (only if admin panel exists)
+if (file_exists('admin/config.php')) {
+    require_once 'admin/config.php';
+    
+    // Get a random active keyword from database
+    $keyword = 'aqua regia fest'; // Default fallback
+    try {
+        $pdo = getDBConnection();
+        $stmt = $pdo->query("SELECT keyword FROM keywords WHERE status = 'active' ORDER BY RAND() LIMIT 1");
+        $result = $stmt->fetch();
+        if ($result) {
+            $keyword = $result['keyword'];
+        }
+    } catch (Exception $e) {
+        // Use default keyword if database error
+        $keyword = 'aqua regia fest';
     }
-} catch (Exception $e) {
-    // Use default keyword if database error
+} else {
+    // Use default keyword if admin panel not installed
     $keyword = 'aqua regia fest';
 }
 ?>
