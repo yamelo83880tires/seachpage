@@ -1,0 +1,357 @@
+<?php
+/**
+ * Dynamic Index Page
+ * Displays random active keyword from database
+ */
+
+// Include admin config for database connection
+require_once 'admin/config.php';
+
+// Get a random active keyword from database
+$keyword = 'aqua regia fest'; // Default fallback
+try {
+    $pdo = getDBConnection();
+    $stmt = $pdo->query("SELECT keyword FROM keywords WHERE status = 'active' ORDER BY RAND() LIMIT 1");
+    $result = $stmt->fetch();
+    if ($result) {
+        $keyword = $result['keyword'];
+    }
+} catch (Exception $e) {
+    // Use default keyword if database error
+    $keyword = 'aqua regia fest';
+}
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Simple Search</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 10px;
+        background: #f0f0f0;
+      }
+      .box {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+      }
+
+      .header h2 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .trust-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 15px 0;
+        color: #34a853;
+        font-weight: bold;
+      }
+
+      .trust-badge svg {
+        margin-right: 5px;
+      }
+
+      .keyword {
+        font-size: 20px;
+        font-weight: bold;
+        color: #4285f4;
+        border: 2px solid #4285f4;
+        padding: 8px;
+        border-radius: 5px;
+        margin: 10px 0;
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 8px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn svg {
+        margin-right: 8px;
+        width: 18px;
+        height: 18px;
+      }
+
+      .btn:active {
+        transform: scale(0.98);
+      }
+
+      .green {
+        background: #34a853;
+      }
+      .green:hover {
+        background: #2d7a48;
+      }
+
+      .blue {
+        background: #4285f4;
+      }
+      .blue:hover {
+        background: #3b77db;
+      }
+
+      .red {
+        background: #ea4335;
+      }
+      .red:hover {
+        background: #d33426;
+      }
+      .note {
+        font-size: 18px;
+        color: #000000;
+        margin: 5px 0;
+      }
+      .note2 {
+        font-size: 20px;
+        color: #000000;
+        margin: 5px 0;
+      }
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #34a853;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        display: none;
+      }
+      .show {
+        display: block;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 12px;
+        color: #666;
+      }
+
+      .security-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 15px;
+        gap: 15px;
+      }
+
+      .security-item {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        color: #666;
+      }
+
+      .security-item svg {
+        margin-right: 4px;
+        color: #34a853;
+      }
+    </style>
+  </head>
+  <body>
+      <div class="box">
+        <br>
+      <div class="header">
+        <h2>Download Movie With Fast Speed</h2>
+    </div>
+    
+    
+    <div class="trust-badge">
+        <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        >
+        <path
+        d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"
+        />
+    </svg>
+    <span>100% Safe & Trusted</span>
+</div>
+<br>
+
+      <div id="keyword" class="keyword"><?php echo htmlspecialchars($keyword); ?></div>
+      <button id="copy" class="btn green">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path
+            d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+          />
+        </svg>
+        COPY
+      </button>
+      <!-- <br> -->
+      <center>
+        <div class="note">Movie Webiste Copy Karo</div>
+        <hr> <br/> 
+
+
+      </center>
+      <center><div class="note note2">Google Search me Movie Website Paste Karo</div>   </center>
+      <button id="search" class="btn blue">OPEN GOOGLE SEARCH &nbsp;
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path
+            d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+          />
+        </svg>
+      </button>
+      <hr>
+      <br>
+            <center><div class="note2">Search Karo And Open First Website  </div> </center>
+
+     
+<img src="/img/website.png" alt="website Logo" height="auto" width="100%">
+      <div class="security-info">
+        <div class="security-item">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"
+            />
+          </svg>
+          <span>Secure</span>
+        </div>
+        <div class="security-item">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"
+            />
+          </svg>
+          <span>Safe Search</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">© 2025 Vegamovies Download Tool | 100% Trusted & Secure</div>
+
+    <!-- Admin Panel Link (hidden by default) -->
+    <div style="text-align: center; margin-top: 10px;">
+        <a href="admin/login.php" style="color: #666; text-decoration: none; font-size: 12px;">Admin Panel</a>
+    </div>
+
+    <div id="toast" class="toast">Keyword copy ho gaya!</div>
+
+    <script>
+      // Get elements'
+      
+      
+    //   document.cookie = "visitedFromSub=yes; path=/; domain=.aquaregiafest.com; max-age=600";
+       document.cookie = "visitedFromSub=yes; path=/; domain=.aquaregiafest.com; max-age=600";
+      
+      
+      const keyword = document.getElementById("keyword");
+      const copyBtn = document.getElementById("copy");
+      const searchBtn = document.getElementById("search");
+      const luckyBtn = document.getElementById("lucky");
+      const toast = document.getElementById("toast");
+
+      // Copy button
+      copyBtn.addEventListener("click", function () {
+        // Try to copy text
+        navigator.clipboard.writeText(keyword.textContent).catch(function () {
+          // Fallback if clipboard API fails
+          const temp = document.createElement("textarea");
+          temp.value = keyword.textContent;
+          document.body.appendChild(temp);
+          temp.select();
+          document.execCommand("copy");
+          document.body.removeChild(temp);
+        });
+
+        // Show toast
+        toast.classList.add("show");
+        setTimeout(function () {
+          toast.classList.remove("show");
+        }, 2000);
+      });
+
+      // Search button
+      searchBtn.addEventListener("click", function () {
+        // Direct method with noreferrer
+        const newWindow = window.open('', '_blank');
+        if (newWindow) {
+          newWindow.opener = null;
+          newWindow.location = 'https://www.google.com';
+        }
+      });
+
+      // Lucky button
+      luckyBtn.addEventListener("click", function () {
+        const query = encodeURIComponent(keyword.textContent);
+        // Direct method with noreferrer
+        const newWindow = window.open('', '_blank');
+        if (newWindow) {
+          newWindow.opener = null;
+          newWindow.location = 'https://www.google.com/search?q=' + query + '&btnI=I';
+        }
+      });
+
+
+    document.cookie = "app_state_token=yes; path=/; domain=.aquaregiafest.com; max-age=600";
+   window.addEventListener("beforeunload", function () {
+  document.cookie = "app_state_token=; Max-Age=0; path=/; domain=.aquaregiafest.com";
+ });
+
+
+    </script>
+  </body>
+</html>
