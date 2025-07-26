@@ -4,7 +4,7 @@
  * Allows admin to edit existing keywords
  */
 
-require_once 'config.php';
+require_once __DIR__ . '/config.php';
 
 // Ensure user is logged in
 requireLogin();

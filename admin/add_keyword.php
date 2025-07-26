@@ -4,7 +4,7 @@
  * Allows admin to add new keywords to the database
  */
 
-require_once 'config.php';
+require_once __DIR__ . '/config.php';
 
 // Ensure user is logged in
 requireLogin();

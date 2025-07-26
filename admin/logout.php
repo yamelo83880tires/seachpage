@@ -4,7 +4,7 @@
  * Handles secure logout and session cleanup
  */
 
-require_once 'config.php';
+require_once __DIR__ . '/config.php';
 
 // Check if user is logged in
 $was_logged_in = isLoggedIn();

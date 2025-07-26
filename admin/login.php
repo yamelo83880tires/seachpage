@@ -4,7 +4,8 @@
  * Handles user authentication with secure sessions
  */
 
-require_once 'config.php';
+// Include config file
+require_once __DIR__ . '/config.php';
 
 // Redirect if already logged in
 if (isLoggedIn()) {
